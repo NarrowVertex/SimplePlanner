@@ -1,1 +1,3 @@
 # SimplePlanner
+
+So simple
