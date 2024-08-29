@@ -185,6 +185,19 @@ class PlansTable(Table):
 
         return rows
 
+    def get_data(self, plan_id):
+        conn, cursor = self.connect_db()
+
+        # 데이터 조회
+        cursor.execute('SELECT * FROM plans WHERE plan_id = ?', (plan_id,))
+
+        # 결과를 가져옵니다.
+        rows = cursor.fetchall()
+
+        self.disconnect_db(conn)
+
+        return rows[0]
+
     def update_data(self, plan_id, name, goal, description):
         conn, cursor = self.connect_db()
 
