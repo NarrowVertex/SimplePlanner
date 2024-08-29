@@ -10,8 +10,8 @@ class System(metaclass=SingletonMeta):
 
         System.instances[System] = self
 
-        self.page_manager = None
-        self.db_manager = None
+        self.page_manager: PageManager = None
+        self.db_manager: DBManager = None
 
     def initialize(self):
         self.page_manager = PageManager()
