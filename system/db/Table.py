@@ -225,8 +225,11 @@ class TasksTable(Table):
             task_id TEXT PRIMARY KEY,
             plan_id TEXT,
             name TEXT,
-            start_date TEXT,
-            end_date TEXT
+            description TEXT,
+            trigger_time TEXT,
+            start_time TEXT,
+            end_time TEXT,
+            time_list TEXT
         )
         ''')
 
@@ -246,15 +249,15 @@ class TasksTable(Table):
 
         self.disconnect_db(conn)
 
-    def add_data(self, plan_id, name, start_date, end_date):
+    def add_data(self, plan_id, name, description, trigger_time, start_time, end_time, time_list):
         conn, cursor = self.connect_db()
 
         task_id = generate_uuid()
 
         # 데이터 삽입
         cursor.execute('''
-        INSERT INTO tasks (task_id, plan_id, name, start_date, end_date) VALUES (?, ?, ?, ?, ?)
-        ''', (task_id, plan_id, name, start_date, end_date))
+        INSERT INTO tasks (task_id, plan_id, name, description, trigger_time, start_time, end_time, time_list) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (task_id, plan_id, name, description, trigger_time, start_time, end_time, time_list))
 
         # 변경 사항을 저장합니다.
         conn.commit()
@@ -276,18 +279,15 @@ class TasksTable(Table):
 
         self.disconnect_db(conn)
 
-    def show_data(self):
+    def get_data(self, plan_id):
         conn, cursor = self.connect_db()
 
         # 데이터 조회
-        cursor.execute('SELECT * FROM tasks')
+        cursor.execute('SELECT * FROM tasks WHERE plan_id = ?', (plan_id, ))
 
         # 결과를 가져옵니다.
         rows = cursor.fetchall()
 
-        # 가져온 데이터를 출력합니다.
-        print(f"found data: {len(rows)}")
-        for row in rows:
-            print(row)
-
         self.disconnect_db(conn)
+
+        return rows

@@ -31,3 +31,7 @@ class PlanInfoPage(BasePage):
         if st.button("Edit", use_container_width=True):
             plan = self.get_parameters()[0]
             self.listener.switch_page("PlanInfoEditPage", plan)
+
+        if st.button("Schedule", use_container_width=True):
+            plan = self.get_parameters()[0]
+            self.listener.switch_page("PlanSchedulePage", plan)

@@ -4,6 +4,7 @@ from page.PlanListPage import PlanListPage
 from page.PlanListEditPage import PlanListEditPage
 from page.PlanInfoPage import PlanInfoPage
 from page.PlanInfoEditPage import PlanInfoEditPage
+from page.PlanSchedulePage import PlanSchedulePage
 
 
 class PageManager:
@@ -14,6 +15,7 @@ class PageManager:
         self._register_page(PlanListEditPage())
         self._register_page(PlanInfoPage())
         self._register_page(PlanInfoEditPage())
+        self._register_page(PlanSchedulePage())
 
     def _register_page(self, page):
         self.page_map[type(page).__name__] = page
