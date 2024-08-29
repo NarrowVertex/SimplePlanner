@@ -1,14 +1,14 @@
 import streamlit as st
 
-from listener.PageListEditListener import PageListEditListener
+from listener.PlanListEditListener import PlanListEditListener
 from page.BasePage import BasePage
 
 
 class PlanListEditPage(BasePage):
-    listener: PageListEditListener
+    listener: PlanListEditListener
 
     def __init__(self):
-        super().__init__(PageListEditListener())
+        super().__init__(PlanListEditListener())
 
     def main(self):
         pass

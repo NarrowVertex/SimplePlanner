@@ -1,7 +1,7 @@
 from listener.BaseListener import BaseListener
 
 
-class PageListListener(BaseListener):
+class PlanListListener(BaseListener):
     def __init__(self):
         super().__init__()
         self.temp_user_id = "test_id"

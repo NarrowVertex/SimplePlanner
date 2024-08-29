@@ -1,6 +1,6 @@
 from listener.BaseListener import BaseListener
 
 
-class PageListEditListener(BaseListener):
+class PlanListEditListener(BaseListener):
     def __init__(self):
         super().__init__()

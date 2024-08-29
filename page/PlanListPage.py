@@ -1,14 +1,14 @@
 import streamlit as st
 
-from listener.PageListListener import PageListListener
+from listener.PlanListListener import PlanListListener
 from page.BasePage import BasePage
 
 
 class PlanListPage(BasePage):
-    listener: PageListListener
+    listener: PlanListListener
 
     def __init__(self):
-        super().__init__(PageListListener())
+        super().__init__(PlanListListener())
 
         self.plan_list = []
 
@@ -24,7 +24,7 @@ class PlanListPage(BasePage):
         st.title("Side")
 
         if st.button("create plan", use_container_width=True):
-            self.listener: PageListListener
+            self.listener: PlanListListener
             self.listener.add_plan("name", "goal", "description")
 
         if st.button("get plans", use_container_width=True):
