@@ -5,11 +5,13 @@ from page.BasePage import BasePage
 
 
 class PlanListEditPage(BasePage):
+    listener: PageListEditListener
+
     def __init__(self):
         super().__init__(PageListEditListener())
 
-    def run(self):
-        st.title("TEST2")
+    def main(self):
+        pass
 
-        if st.button("SWITCH"):
-            self.switch_page("PlanListPage")
+    def side(self):
+        pass

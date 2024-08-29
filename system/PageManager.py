@@ -2,6 +2,7 @@ import streamlit as st
 
 from page.PlanListEditPage import PlanListEditPage
 from page.PlanListPage import PlanListPage
+from page.PlanInfoPage import PlanInfoPage
 
 
 class PageManager:
@@ -10,6 +11,7 @@ class PageManager:
 
         self._register_page(PlanListPage())
         self._register_page(PlanListEditPage())
+        self._register_page(PlanInfoPage())
 
     def _register_page(self, page):
         self.page_map[type(page).__name__] = page

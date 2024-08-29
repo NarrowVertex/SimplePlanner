@@ -5,16 +5,12 @@ from page.BasePage import BasePage
 
 
 class PlanListPage(BasePage):
+    listener: PageListListener
+
     def __init__(self):
         super().__init__(PageListListener())
 
         self.plan_list = []
-
-    def run(self):
-        with st.sidebar:
-            self.side()
-
-        self.main()
 
     def main(self):
         st.title("Plan List")
@@ -22,7 +18,7 @@ class PlanListPage(BasePage):
         plan_list = self.listener.get_plans()
         for plan in plan_list:
             if st.button(label=plan[2], key=plan[0], use_container_width=True):
-                print(f'Plan[{plan[2]}] is clicked!')
+                self.listener.switch_page("PlanInfoPage", plan)
 
     def side(self):
         st.title("Side")
