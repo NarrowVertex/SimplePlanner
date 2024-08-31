@@ -224,6 +224,7 @@ class TasksTable(Table):
         CREATE TABLE IF NOT EXISTS tasks (
             task_id TEXT PRIMARY KEY,
             plan_id TEXT,
+            type TEXT,
             name TEXT,
             description TEXT,
             trigger_time TEXT,
@@ -249,15 +250,15 @@ class TasksTable(Table):
 
         self.disconnect_db(conn)
 
-    def add_data(self, plan_id, name, description, trigger_time, start_time, end_time, time_list):
+    def add_data(self, plan_id, task_type, name, description, trigger_time, start_time, end_time, time_list):
         conn, cursor = self.connect_db()
 
         task_id = generate_uuid()
 
         # 데이터 삽입
         cursor.execute('''
-        INSERT INTO tasks (task_id, plan_id, name, description, trigger_time, start_time, end_time, time_list) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (task_id, plan_id, name, description, trigger_time, start_time, end_time, time_list))
+        INSERT INTO tasks (task_id, plan_id, type, name, description, trigger_time, start_time, end_time, time_list) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (task_id, plan_id, task_type, name, description, trigger_time, start_time, end_time, time_list))
 
         # 변경 사항을 저장합니다.
         conn.commit()
@@ -265,6 +266,19 @@ class TasksTable(Table):
         self.disconnect_db(conn)
 
         return task_id
+
+    def update_data(self, task_id, task_type, name, description, trigger_time, start_time, end_time, time_list):
+        conn, cursor = self.connect_db()
+
+        # 데이터 업데이트
+        cursor.execute('''
+        UPDATE tasks SET type = ?, name = ?, description = ?, trigger_time = ?, start_time = ?, end_time = ?, time_list = ? WHERE task_id = ?
+        ''', (task_type, name, description, trigger_time, start_time, end_time, time_list, task_id))
+
+        # 변경 사항을 저장합니다.
+        conn.commit()
+
+        self.disconnect_db(conn)
 
     def remove_data(self, task_id):
         conn, cursor = self.connect_db()
@@ -279,7 +293,7 @@ class TasksTable(Table):
 
         self.disconnect_db(conn)
 
-    def get_data(self, plan_id):
+    def get_tasks(self, plan_id):
         conn, cursor = self.connect_db()
 
         # 데이터 조회
@@ -291,3 +305,16 @@ class TasksTable(Table):
         self.disconnect_db(conn)
 
         return rows
+
+    def get_task(self, task_id):
+        conn, cursor = self.connect_db()
+
+        # 데이터 조회
+        cursor.execute('SELECT * FROM tasks WHERE task_id = ?', (task_id,))
+
+        # 결과를 가져옵니다.
+        rows = cursor.fetchall()
+
+        self.disconnect_db(conn)
+
+        return rows[0]

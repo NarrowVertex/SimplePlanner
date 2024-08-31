@@ -7,6 +7,8 @@ class PlanScheduleListener(BaseListener):
 
     def get_tasks(self, plan_id):
         db_manager = self.system.db_manager
-        tasks_table = db_manager.tasks_table
+        return db_manager.get_tasks(plan_id)
 
-        return tasks_table.get_data(plan_id)
+    def add_task(self, task):
+        db_manager = self.system.db_manager
+        db_manager.add_task(task)

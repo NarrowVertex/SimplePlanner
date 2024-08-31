@@ -27,18 +27,35 @@ class DBManager:
 
     def add_task(self, task):
         if isinstance(task, TriggerTask):
-            self.tasks_table.add_data(task.plan_id, task.name, task.description,
+            self.tasks_table.add_data(task.plan_id, task.task_type, task.name, task.description,
                                       task.trigger_time, "", "", "")
         elif isinstance(task, TemporalTask):
-            self.tasks_table.add_data(task.plan_id, task.name, task.description,
+            self.tasks_table.add_data(task.plan_id, task.task_type, task.name, task.description,
                                       "", task.start_time, task.end_time, "")
         elif isinstance(task, PeriodicTask):
-            self.tasks_table.add_data(task.plan_id, task.name, task.description,
+            self.tasks_table.add_data(task.plan_id, task.task_type, task.name, task.description,
                                       "", task.start_time, task.end_time, task.time_list)
         else:
             print("Wrong task type!")
             return
 
+    def update_task(self, new_task):
+        if isinstance(new_task, TriggerTask):
+            self.tasks_table.update_data(new_task.task_id, new_task.task_type, new_task.name, new_task.description,
+                                         new_task.trigger_time, "", "", "")
+        elif isinstance(new_task, TemporalTask):
+            self.tasks_table.update_data(new_task.task_id, new_task.task_type, new_task.name, new_task.description,
+                                         "", new_task.start_time, new_task.end_time, "")
+        elif isinstance(new_task, PeriodicTask):
+            self.tasks_table.update_data(new_task.task_id, new_task.task_type, new_task.name, new_task.description,
+                                         "", new_task.start_time, new_task.end_time, new_task.time_list)
+        else:
+            print("Wrong task type!")
+            return
+
     def get_tasks(self, plan_id):
-        return self.tasks_table.get_data(plan_id)
+        return self.tasks_table.get_tasks(plan_id)
+
+    def get_task(self, task_id):
+        return self.tasks_table.get_task(task_id)
 
