@@ -1,7 +1,11 @@
+import ast
+import uuid
+
 import streamlit as st
 
 from listener.PlanTaskInfoEditListener import PlanTaskInfoEditListener
 from page.BasePage import BasePage
+from page.component.Calendar import Calendar
 from system.task.Task import create_task
 
 from datetime import datetime
@@ -102,7 +106,6 @@ class PlanTaskInfoEditPage(BasePage):
                                  .strftime('%Y-%m-%d %H:%M:%S'))
 
         elif self.new_task_type == "periodic":
-            st.subheader("Start Time")
             if task[6] != "" or task[7] != "":
                 datetime_start_time = datetime.strptime(task[6], '%Y-%m-%d %H:%M:%S')
                 datetime_end_time = datetime.strptime(task[7], '%Y-%m-%d %H:%M:%S')
@@ -127,8 +130,24 @@ class PlanTaskInfoEditPage(BasePage):
             self.new_end_time = new_datetime_end_time_date.strftime('%Y-%m-%d %H:%M:%S')
 
             st.subheader("Time List")
-            self.new_time_list = st.text_input(value=f"{task[8]}", key=f"{task[0]}_time_list",
-                                               label="time_list", label_visibility="collapsed")
+            init_events = task[8]
+            if init_events == "":
+                init_events = "[]"
+            init_events = ast.literal_eval(init_events)
+
+            calendar = Calendar(task[0], init_events)
+
+            if st.button("add event"):
+                event = {
+                    "event_id": f"{uuid.uuid4()}",
+                    "title": "test_event",
+                    "start": "2024-09-01T15:00:00+09:00",
+                    "end": "2024-09-01T16:30:00+09:00"
+                }
+                calendar.add_event(event)
+
+            calendar.render()
+            self.new_time_list = str(calendar.get_events())
 
     def side(self):
         st.title("Selection")
@@ -146,3 +165,12 @@ class PlanTaskInfoEditPage(BasePage):
             plan = self.get_parameters()[0]
             task = self.get_parameters()[1]
             self.listener.switch_page("PlanTaskInfoPage", plan, task)
+
+        st.divider()
+
+        if st.button("Remove", use_container_width=True):
+            plan = self.get_parameters()[0]
+            task = self.get_parameters()[1]
+            self.listener.remove_task(task[0])
+            self.listener.switch_page("PlanSchedulePage", plan)
+

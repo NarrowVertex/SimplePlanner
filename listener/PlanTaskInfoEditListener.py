@@ -12,3 +12,7 @@ class PlanTaskInfoEditListener(BaseListener):
     def get_task(self, task_id):
         db_manager = self.system.db_manager
         return db_manager.get_task(task_id)
+
+    def remove_task(self, task_id):
+        db_manager = self.system.db_manager
+        db_manager.remove_task(task_id)

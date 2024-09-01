@@ -53,6 +53,9 @@ class DBManager:
             print("Wrong task type!")
             return
 
+    def remove_task(self, task_id):
+        self.tasks_table.remove_data(task_id)
+
     def get_tasks(self, plan_id):
         return self.tasks_table.get_tasks(plan_id)
 
