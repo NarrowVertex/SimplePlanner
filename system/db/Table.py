@@ -250,10 +250,8 @@ class TasksTable(Table):
 
         self.disconnect_db(conn)
 
-    def add_data(self, plan_id, task_type, name, description, trigger_time, start_time, end_time, time_list):
+    def add_data(self, task_id, plan_id, task_type, name, description, trigger_time, start_time, end_time, time_list):
         conn, cursor = self.connect_db()
-
-        task_id = generate_uuid()
 
         # 데이터 삽입
         cursor.execute('''

@@ -48,9 +48,7 @@ class Calendar:
     def update_event(self, changed_event):
         # 기존 이벤트 리스트에서 해당 이벤트를 찾아 업데이트
         for event in self.latest_calendar_events:
-            if (event["title"] == changed_event["oldEvent"]["title"] and
-                    event["start"] == changed_event["oldEvent"]["start"] and
-                    event["end"] == changed_event["oldEvent"]["end"]):
+            if event["event_id"] == changed_event["oldEvent"]["extendedProps"]["event_id"]:
                 event["start"] = changed_event["event"]["start"]
                 event["end"] = changed_event["event"]["end"]
 
@@ -58,14 +56,18 @@ class Calendar:
         self.latest_calendar_events.clear()
         for event in events:
             self.latest_calendar_events.append({
+                "event_id": event["extendedProps"]["event_id"],
                 "title": event["title"],
                 "start": event["start"],
                 "end": event["end"]
             })
 
     def add_event(self, event):
-        self.old_calendar_events = deepcopy(self.latest_calendar_events)
+        self.update()
         self.old_calendar_events.append(event)
+
+    def update(self):
+        self.old_calendar_events = deepcopy(self.latest_calendar_events)
 
     def get_events(self):
         return self.latest_calendar_events

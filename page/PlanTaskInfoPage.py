@@ -1,7 +1,10 @@
+from typing import Union
+
 import streamlit as st
 
 from listener.PlanTaskInfoListener import PlanTaskInfoListener
 from page.BasePage import BasePage
+from system.task.Task import BaseTask, TriggerTask, TemporalTask, PeriodicTask
 
 
 class PlanTaskInfoPage(BasePage):
@@ -13,37 +16,37 @@ class PlanTaskInfoPage(BasePage):
     def main(self):
         plan = self.get_parameters()[0]
         task = self.get_parameters()[1]
-        task_type = task[2]
+        task: Union[BaseTask, TriggerTask, TemporalTask, PeriodicTask]
 
         st.title("Task")
 
         st.subheader("Task Type")
-        st.text(f"{task_type}")
+        st.text(f"{task.task_type}")
 
         st.subheader("Name")
-        st.text(f"{task[3]}")
+        st.text(f"{task.name}")
 
         st.subheader("Description")
-        st.text(f"{task[4]}")
+        st.text(f"{task.description}")
 
-        if task_type == "trigger":
+        if task.task_type == "trigger":
             st.subheader("Trigger Time")
-            st.text(f"{task[5]}")
-        elif task_type == "temporal":
+            st.text(f"{task.trigger_time}")
+        elif task.task_type == "temporal":
             st.subheader("Start Time")
-            st.text(f"{task[6]}")
+            st.text(f"{task.start_time}")
 
             st.subheader("End Time")
-            st.text(f"{task[7]}")
-        elif task_type == "periodic":
+            st.text(f"{task.end_time}")
+        elif task.task_type == "periodic":
             st.subheader("Start Time")
-            st.text(f"{task[6]}")
+            st.text(f"{task.start_time}")
 
             st.subheader("End Time")
-            st.text(f"{task[7]}")
+            st.text(f"{task.end_time}")
 
             st.subheader("Time List")
-            st.text(f"{task[8]}")
+            st.text(f"{task.time_list}")
 
     def side(self):
         if st.button("Return", use_container_width=True):

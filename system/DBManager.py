@@ -1,5 +1,5 @@
 from system.db.Table import PlansTable, TasksTable
-from system.task.Task import BaseTask, TriggerTask, TemporalTask, PeriodicTask
+from system.task.Task import BaseTask, TriggerTask, TemporalTask, PeriodicTask, create_task_by_list
 
 
 class DBManager:
@@ -27,13 +27,13 @@ class DBManager:
 
     def add_task(self, task):
         if isinstance(task, TriggerTask):
-            self.tasks_table.add_data(task.plan_id, task.task_type, task.name, task.description,
+            self.tasks_table.add_data(task.task_id, task.plan_id, task.task_type, task.name, task.description,
                                       task.trigger_time, "", "", "")
         elif isinstance(task, TemporalTask):
-            self.tasks_table.add_data(task.plan_id, task.task_type, task.name, task.description,
+            self.tasks_table.add_data(task.task_id, task.plan_id, task.task_type, task.name, task.description,
                                       "", task.start_time, task.end_time, "")
         elif isinstance(task, PeriodicTask):
-            self.tasks_table.add_data(task.plan_id, task.task_type, task.name, task.description,
+            self.tasks_table.add_data(task.task_id, task.plan_id, task.task_type, task.name, task.description,
                                       "", task.start_time, task.end_time, task.time_list)
         else:
             print("Wrong task type!")
@@ -57,8 +57,12 @@ class DBManager:
         self.tasks_table.remove_data(task_id)
 
     def get_tasks(self, plan_id):
-        return self.tasks_table.get_tasks(plan_id)
+        task_lists = self.tasks_table.get_tasks(plan_id)
+        tasks = []
+        for task_list in task_lists:
+            tasks.append(create_task_by_list(task_list))
+        return tasks
 
     def get_task(self, task_id):
-        return self.tasks_table.get_task(task_id)
+        return create_task_by_list(self.tasks_table.get_task(task_id))
 
