@@ -168,6 +168,9 @@ class PlanTaskInfoEditPage(BasePage):
             self.calendar.render()
             self.new_task.time_list = str(self.calendar.get_events())
 
+            # 테스크를 새로 만들 때, 지정된 부분을 선택해서 추가하는 디테일
+            # 테스크의 이름, 삭제, 추가로 할거면 설명을 추가하고 수정하는 기능이 필요
+
     def side(self):
         st.title("Selection")
 
